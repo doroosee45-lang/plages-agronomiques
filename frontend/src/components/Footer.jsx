@@ -59,7 +59,7 @@ export default function Footer() {
                     {contact.email}
                   </a>
                 ) : (
-                  <span className="text-creme-200/60">(adresse non renseignée)</span>
+                  <span className="text-creme-200/60">oseedoro@gmail.com</span>
                 )}
               </span>
             </li>
@@ -72,7 +72,7 @@ export default function Footer() {
                     {contact.whatsapp}
                   </a>
                 ) : (
-                  <span className="text-creme-200/60">(numéro non renseigné)</span>
+                  <span className="text-creme-200/60">+216 55116324</span>
                 )}
               </span>
             </li>
