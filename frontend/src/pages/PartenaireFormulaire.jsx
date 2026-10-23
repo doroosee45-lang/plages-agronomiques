@@ -238,9 +238,13 @@ export default function PartenaireFormulaire() {
                 <div className="mt-4">
                   <Encadre ton="attention" titre="Dossier bien enregistré, e-mail non parti">
                     Votre dossier est conservé et visible dans l’espace d’analyse de l’équipe.
-                    L’envoi automatique du courriel n’est pas encore activé sur ce serveur
-                    ({resultat.email?.raison || 'configuration incomplète'}). Vous pouvez aussi écrire
-                    directement à l’adresse indiquée ci-dessous en rappelant votre référence.
+                    La plateforme n’a pas pu confirmer l’envoi automatique du courriel.
+                    {resultat.email?.raison === 'resend_non_configure' && ' La clé Resend manque dans la configuration du serveur.'}
+                    {resultat.email?.raison === 'destinataire_absent' && ' L’adresse de réception manque dans la configuration du serveur.'}
+                    {resultat.email?.raison === 'resend_refus' && ' Le fournisseur e-mail a refusé l’envoi; vérifiez la clé API et le domaine expéditeur dans Resend.'}
+                    {resultat.email?.raison === 'resend_injoignable' && ' Le fournisseur e-mail est momentanément injoignable.'}
+                    {resultat.email?.raison === 'resend_delai_depasse' && ' Le fournisseur e-mail n’a pas répondu à temps.'}
+                    {' '}Vous pouvez aussi écrire directement à l’adresse indiquée ci-dessous en rappelant votre référence.
                   </Encadre>
                 </div>
               )}
