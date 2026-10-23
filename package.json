@@ -1,0 +1,26 @@
+{
+  "name": "plages-agronomiques",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Plateforme de collecte et d'analyse des plages agronomiques par culture (Équateur / Bandundu, RDC)",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:frontend": "npm run dev --workspace plages-agronomiques-frontend",
+    "dev:backend": "npm run dev --workspace plages-agronomiques-backend",
+    "build": "npm run build --workspace plages-agronomiques-frontend",
+    "build:portable": "npm run build:portable --workspace plages-agronomiques-frontend",
+    "build:all": "npm run build && npm run build:portable",
+    "start": "node backend/server/index.js",
+    "db:statut": "npm run db:statut --workspace plages-agronomiques-backend",
+    "db:check": "npm run db:statut --workspace plages-agronomiques-backend",
+    "install:all": "npm install"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

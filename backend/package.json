@@ -1,0 +1,18 @@
+{
+  "name": "plages-agronomiques-backend",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API Express et stockage MongoDB de la plateforme Plages agronomiques",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "node server/index.js",
+    "db:statut": "node scripts/db-statut.mjs"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}

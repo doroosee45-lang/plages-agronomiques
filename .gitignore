@@ -1,0 +1,24 @@
+node_modules/
+frontend/dist/
+frontend/dist-portable/
+backend/data/
+# Secrets and machine-local environment files, at every directory depth.
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+secrets/
+**/secrets/
+*.log
+.DS_Store
+__pycache__/

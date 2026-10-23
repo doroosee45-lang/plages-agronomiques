@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Styles de base — palette verte profonde, fond crème, typographie lisible
+   ========================================================================== */
+@layer base {
+  :root {
+    --vert: #123d2a;
+    --creme: #faf6ec;
+    --terre: #db8a4c;
+  }
+
+  * { -webkit-tap-highlight-color: transparent; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .001ms !important;
+    }
+  }
+
+  body {
+    @apply bg-creme-100 font-sans text-encre-700 antialiased;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(71,129,95,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(219,138,76,.08), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 { @apply font-display text-vert-900; text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  ::selection { background: rgba(219,138,76,.30); }
+
+  :focus-visible {
+    outline: 3px solid #db8a4c;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Barre de défilement discrète */
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-thumb { background: #c3d9cb; border-radius: 99px; border: 3px solid transparent; background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #98bfa6; background-clip: content-box; }
+}
+
+/* ==========================================================================
+   Composants
+   ========================================================================== */
+@layer components {
+  .conteneur {
+    @apply mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold
+           transition-all duration-300 ease-doux focus-visible:outline-none disabled:cursor-not-allowed
+           disabled:opacity-50 min-h-[44px];
+  }
+  .btn-primaire {
+    @apply btn bg-vert-800 text-creme-100 shadow-doux hover:bg-vert-700 hover:shadow-carte
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondaire {
+    @apply btn border border-vert-800/25 bg-white/70 text-vert-800 hover:border-vert-800/60
+           hover:bg-white hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-terre {
+    @apply btn bg-terre-700 text-white shadow-doux hover:bg-terre-800 hover:-translate-y-0.5
+           active:translate-y-0;
+  }
+  .btn-fantome {
+    @apply btn text-vert-800 hover:bg-vert-800/5;
+  }
+
+  .carte {
+    @apply rounded-xl2 border border-vert-800/10 bg-white/85 shadow-doux backdrop-blur-sm;
+  }
+  .carte-survol {
+    @apply carte transition-all duration-300 ease-doux hover:-translate-y-1 hover:border-vert-800/20 hover:shadow-carte;
+  }
+
+  .etiquette {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase
+           tracking-[.12em];
+  }
+
+  .champ {
+    @apply w-full rounded-lg border border-vert-800/20 bg-white px-3.5 py-2.5 text-[15px] text-encre-900
+           placeholder:text-encre-500/60 transition-colors duration-200
+           hover:border-vert-800/35 focus:border-vert-600 focus:outline-none focus:ring-4
+           focus:ring-vert-600/15 min-h-[44px];
+  }
+  .champ[aria-invalid='true'] {
+    @apply border-red-400 bg-red-50/40 focus:border-red-500 focus:ring-red-500/15;
+  }
+  .etiquette-champ {
+    @apply mb-1.5 block text-[13px] font-semibold text-vert-900;
+  }
+  .aide-champ {
+    @apply mt-1 block text-xs leading-relaxed text-encre-500;
+  }
+
+  .lien-souligne {
+    @apply relative font-semibold text-vert-800 underline decoration-terre-400 decoration-2
+           underline-offset-4 transition-colors hover:text-terre-700 hover:decoration-terre-600;
+  }
+
+  .kpi {
+    @apply carte p-4 sm:p-5;
+  }
+  .kpi__valeur {
+    @apply font-display text-3xl font-semibold leading-none text-vert-900 tabular-nums;
+  }
+  .kpi__label {
+    @apply mt-1.5 block text-[11px] font-semibold uppercase tracking-[.1em] text-encre-500;
+  }
+
+  .surtitre {
+    @apply text-[11px] font-bold uppercase tracking-[.22em] text-terre-700;
+  }
+
+  .prose-site p { @apply mb-4 leading-relaxed; }
+  .prose-site ul { @apply mb-4 space-y-2 pl-5; }
+  .prose-site li { @apply list-disc leading-relaxed marker:text-vert-400; }
+  .prose-site strong { @apply font-semibold text-vert-900; }
+}
+
+/* ==========================================================================
+   Animations d'apparition au défilement
+   ========================================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
+}
+.reveal.est-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* Transition de page */
+.page-enter { animation: monte .5s cubic-bezier(.22,.61,.36,1) both; }
+
+/* Impression : le récapitulatif doit rester lisible */
+@media print {
+  body { background: #fff !important; }
+  .sans-impression, header, footer, nav { display: none !important; }
+  .carte { box-shadow: none !important; border-color: #ccc !important; background: #fff !important; }
+  .conteneur { max-width: none !important; padding: 0 !important; }
+}
