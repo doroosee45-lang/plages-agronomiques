@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../lib/api.js';
 import Reveal from '../components/Reveal.jsx';
 import Photo from '../components/Photo.jsx';
 import { Progression, Encadre, Etiquette } from '../components/Ui.jsx';
@@ -151,7 +152,7 @@ export default function PartenaireFormulaire() {
     setEnvoi(true);
     setErreurEnvoi(null);
     try {
-      const rep = await fetch('/api/partenaires', {
+      const rep = await fetch(apiUrl('/api/partenaires'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ donnees, site_web: '' })

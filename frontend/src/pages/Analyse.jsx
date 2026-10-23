@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { api } from '../lib/api.js';
+import { api, apiUrl } from '../lib/api.js';
 import { CULTURES, PARAMS } from '@shared/model.js';
 import { BadgeStatut, Encadre, Progression, TitreSection } from '../components/Ui.jsx';
 import Reveal from '../components/Reveal.jsx';
@@ -141,9 +141,10 @@ export default function Analyse() {
   const charger = useCallback(async () => {
     try {
       const [s, l, n] = await Promise.all([api.stats(), api.liste(recherche), api.notifications().catch(() => null)]);
+      if (!s?.stats) throw new Error('Le serveur n’a pas renvoyé les statistiques. Vérifiez l’URL API du frontend dans Render.');
       api.partenaires().then(setPartenaires).catch(() => setPartenaires(null));
       setStats(s.stats);
-      setListe(l.relectures);
+      setListe(l?.relectures || []);
       if (n) setNotifs(n);
       setErreur(null);
     } catch (e) {
@@ -250,12 +251,12 @@ export default function Analyse() {
         />
         <div className="flex flex-wrap gap-2">
           <button type="button" className="btn-secondaire px-4 py-2 text-[13px]" onClick={charger}>Actualiser</button>
-          <a href="/api/export.csv" className="btn-secondaire px-4 py-2 text-[13px]"><IconeCsv className="text-base" /> Exporter CSV</a>
+          <a href={apiUrl('/api/export.csv')} className="btn-secondaire px-4 py-2 text-[13px]"><IconeCsv className="text-base" /> Exporter CSV</a>
           <button type="button" className="btn-secondaire px-4 py-2 text-[13px]" onClick={() => fichierRef.current?.click()} disabled={importEnCours}>
             <IconeArchive className="text-base" /> {importEnCours ? 'Import…' : 'Importer CSV'}
           </button>
           <input ref={fichierRef} type="file" accept=".csv,text/csv" className="sr-only" onChange={importer} aria-label="Choisir un fichier CSV à importer" />
-          <a href="/api/modele.csv" className="btn-fantome px-4 py-2 text-[13px]">Modèle CSV</a>
+          <a href={apiUrl('/api/modele.csv')} className="btn-fantome px-4 py-2 text-[13px]">Modèle CSV</a>
           <button type="button" className="btn-fantome px-4 py-2 text-[13px]" onClick={deconnexion}>Déconnexion</button>
         </div>
       </div>
@@ -486,7 +487,7 @@ export default function Analyse() {
               <button type="button" className="btn-secondaire px-4 py-2 text-[12.5px]" onClick={testerEmailPartenaire}>
                 Envoyer un e-mail de test
               </button>
-              <a href="/api/admin/partenaires.csv" className="btn-secondaire px-4 py-2 text-[12.5px]">
+              <a href={apiUrl('/api/admin/partenaires.csv')} className="btn-secondaire px-4 py-2 text-[12.5px]">
                 Exporter en CSV
               </a>
               <button type="button" className="btn-secondaire px-4 py-2 text-[12.5px]" onClick={charger}>Actualiser</button>
@@ -618,7 +619,7 @@ export default function Analyse() {
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-1">
                         <button type="button" className="btn-fantome px-2.5 py-1 text-[12px]" onClick={() => setDetail(r)}>Détail</button>
-                        <a href={`/api/relectures/${r.id}/pdf`} className="btn-fantome px-2 py-1 text-[12px]" title="Télécharger le PDF rempli"><IconePdf /></a>
+                        <a href={apiUrl(`/api/relectures/${r.id}/pdf`)} className="btn-fantome px-2 py-1 text-[12px]" title="Télécharger le PDF rempli"><IconePdf /></a>
                         <button type="button" className="btn-fantome px-2.5 py-1 text-[12px] text-red-700 hover:bg-red-50" onClick={() => supprimer(r)}>Suppr.</button>
                       </div>
                     </td>

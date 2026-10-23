@@ -3,6 +3,9 @@
 /* Version portable ouverte par double-clic : aucun serveur ne répond.
    On évite une requête vouée à l'échec et on renvoie un message clair. */
 const HORS_LIGNE = typeof window !== 'undefined' && window.location.protocol === 'file:';
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+
+export const apiUrl = (url) => `${API_BASE_URL}${url}`;
 
 async function demander(url, options = {}) {
   if (HORS_LIGNE) {
@@ -10,8 +13,8 @@ async function demander(url, options = {}) {
     err.horsLigne = true;
     throw err;
   }
-  const rep = await fetch(url, {
-    credentials: 'same-origin',
+  const rep = await fetch(apiUrl(url), {
+    credentials: API_BASE_URL ? 'include' : 'same-origin',
     headers: options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' },
     ...options
   });
@@ -25,6 +28,9 @@ async function demander(url, options = {}) {
     err.statut = rep.status;
     err.donnees = donnees;
     throw err;
+  }
+  if (!type.includes('application/json')) {
+    throw new Error('Le serveur API a renvoyé une réponse inattendue. Vérifiez VITE_API_URL dans Render.');
   }
   return donnees;
 }
@@ -54,4 +60,4 @@ export const api = {
   deconnexion: () => demander('/api/admin/deconnexion', { method: 'POST' })
 };
 
-export const lienPdf = (id, jeton) => `/api/relectures/${id}/pdf${jeton ? `?jeton=${encodeURIComponent(jeton)}` : ''}`;
+export const lienPdf = (id, jeton) => apiUrl(`/api/relectures/${id}/pdf${jeton ? `?jeton=${encodeURIComponent(jeton)}` : ''}`);
