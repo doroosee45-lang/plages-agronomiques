@@ -52,6 +52,9 @@ const REGLES = [
 
 export default function Guide() {
   const [contact, setContact] = useState(null);
+  const email = contact?.email || 'oseedoro@gmail.com';
+  const whatsapp = contact?.whatsapp || '+21655116324';
+  const whatsappHref = contact?.whatsapp_lien || `https://wa.me/${whatsapp.replace(/\D/g, '')}`;
 
   useEffect(() => {
     api.config().then((c) => setContact(c.contact || null)).catch(() => {});
@@ -301,25 +304,17 @@ export default function Guide() {
               <span className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[.12em] text-encre-500">
                 <IconeEnveloppe className="text-[14px]" /> Par e-mail
               </span>
-              {contact?.email ? (
-                <a href={`mailto:${contact.email}?subject=Relecture des plages agronomiques`} className="lien-souligne mt-1.5 inline-block break-all text-[14.5px]">
-                  {contact.email}
-                </a>
-              ) : (
-                <p className="mt-1.5 text-[13px] text-encre-500">Adresse à renseigner dans le fichier <code className="rounded bg-white/70 px-1">.env</code> (NOTIF_EMAIL).</p>
-              )}
+              <a href={`mailto:${email}?subject=Relecture%20des%20plages%20agronomiques`} className="lien-souligne mt-1.5 inline-block break-all text-[14.5px]">
+                {email}
+              </a>
             </div>
             <div className="rounded-xl border border-vert-800/10 bg-creme-50/70 p-4">
               <span className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[.12em] text-encre-500">
                 <IconeTelephone className="text-[14px]" /> Par WhatsApp
               </span>
-              {contact?.whatsapp ? (
-                <a href={contact.whatsapp_lien} target="_blank" rel="noreferrer" className="lien-souligne mt-1.5 inline-block text-[14.5px]">
-                  {contact.whatsapp}
-                </a>
-              ) : (
-                <p className="mt-1.5 text-[13px] text-encre-500">Numéro à renseigner dans le fichier <code className="rounded bg-white/70 px-1">.env</code> (NOTIF_WHATSAPP).</p>
-              )}
+              <a href={whatsappHref} target="_blank" rel="noreferrer" className="lien-souligne mt-1.5 inline-block text-[14.5px]">
+                {whatsapp}
+              </a>
             </div>
           </div>
           <p className="mt-3 text-[12px] leading-relaxed text-encre-500">
