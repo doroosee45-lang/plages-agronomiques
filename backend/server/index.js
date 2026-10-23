@@ -315,7 +315,8 @@ app.post('/api/admin/notifications/test', async (req, res) => {
 
 app.post('/api/admin/deconnexion', (req, res) => {
   detruireSession(req);
-  res.setHeader('Set-Cookie', 'session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
+  const attributsCookie = process.env.RENDER === 'true' ? 'SameSite=None; Secure' : 'SameSite=Lax';
+  res.setHeader('Set-Cookie', `session=; Path=/; HttpOnly; ${attributsCookie}; Max-Age=0`);
   res.json({ ok: true });
 });
 

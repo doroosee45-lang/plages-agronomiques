@@ -7,11 +7,12 @@ const SECRET = process.env.SECRET_SEL || crypto.randomBytes(24).toString('hex');
 const CODE = process.env.ADMIN_CODE || 'agro2026';
 const TTL = 8 * 60 * 60 * 1000; // 8 heures
 const sessions = new Map();
+const ATTRIBUTS_COOKIE = process.env.RENDER === 'true' ? 'SameSite=None; Secure' : 'SameSite=Lax';
 
 export function creerSession() {
   const id = crypto.randomBytes(24).toString('hex');
   sessions.set(id, Date.now() + TTL);
-  return { id, cookie: `session=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(TTL / 1000)}` };
+  return { id, cookie: `session=${id}; Path=/; HttpOnly; ${ATTRIBUTS_COOKIE}; Max-Age=${Math.floor(TTL / 1000)}` };
 }
 
 export function detruireSession(req) {
