@@ -5,6 +5,9 @@ import { api } from '../lib/api.js';
 
 export default function Footer() {
   const [contact, setContact] = useState(null);
+  const email = contact?.email || 'oseedoro@gmail.com';
+  const whatsapp = contact?.whatsapp || '+216 55116324';
+  const whatsappHref = contact?.whatsapp_lien || `https://wa.me/${whatsapp.replace(/\D/g, '')}`;
 
   useEffect(() => {
     api.config().then((c) => setContact(c.contact || null)).catch(() => {});
@@ -54,26 +57,18 @@ export default function Footer() {
               <IconeEnveloppe className="mt-0.5 shrink-0 text-base text-terre-300" />
               <span>
                 Retour par e-mail<br />
-                {contact?.email ? (
-                  <a href={`mailto:${contact.email}`} className="font-medium text-creme-100 underline decoration-terre-400/60 underline-offset-4 transition-colors hover:decoration-terre-300">
-                    {contact.email}
-                  </a>
-                ) : (
-                  <span className="text-creme-200/60">oseedoro@gmail.com</span>
-                )}
+                <a href={`mailto:${email}`} className="font-medium text-creme-100 underline decoration-terre-400/60 underline-offset-4 transition-colors hover:decoration-terre-300">
+                  {email}
+                </a>
               </span>
             </li>
             <li className="flex items-start gap-2.5">
               <IconeTelephone className="mt-0.5 shrink-0 text-base text-terre-300" />
               <span>
                 Retour par WhatsApp<br />
-                {contact?.whatsapp ? (
-                  <a href={contact.whatsapp_lien} target="_blank" rel="noreferrer" className="font-medium text-creme-100 underline decoration-terre-400/60 underline-offset-4 transition-colors hover:decoration-terre-300">
-                    {contact.whatsapp}
-                  </a>
-                ) : (
-                  <span className="text-creme-200/60">+216 55116324</span>
-                )}
+                <a href={whatsappHref} target="_blank" rel="noreferrer" className="font-medium text-creme-100 underline decoration-terre-400/60 underline-offset-4 transition-colors hover:decoration-terre-300">
+                  {whatsapp}
+                </a>
               </span>
             </li>
           </ul>
